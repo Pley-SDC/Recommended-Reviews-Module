@@ -44,7 +44,7 @@ app.get('/:restaurantId', (req, res) => {
 // particular restaurant_id and all the reviews for that restaurant
 app.get('/api/:restaurantId/', (req, res) => {
   const { restaurantId } = req.params;
-  db.restaurantReviews(restaurantId, (err, results) => {
+  db.getReviews(restaurantId, (err, results) => {
     if (err) {
       res.status(500).send(err);
     }

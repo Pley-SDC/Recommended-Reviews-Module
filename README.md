@@ -1,4 +1,4 @@
-# YumpSF
+# pley
 
 > Module consist of all user reviews for a given restaurant.
 
@@ -6,11 +6,15 @@
 
 ## Related Projects
 
-  - https://github.com/pley...
+  - https://github.com/Pley-SDC/Recommended-Reviews-Module
+  - https://github.com/Pley-SDC/popular-dishes-and-full-menu
+  - https://github.com/Pley-SDC/reservation
+  - https://github.com/Pley-SDC/overview
 
 ## Contributors
 
   - Eric Callari
+  - Danny Ngo (original front-end codebase)
 
 ## Table of Contents
 
@@ -38,7 +42,7 @@
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
-- Node 6.13.0
+- Node >=8.12.0
 - mySql
 
 ## Development
