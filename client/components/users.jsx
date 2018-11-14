@@ -1,5 +1,5 @@
 import React from 'react';
-import User from './user.js';
+import User from './user';
 
 const Users = ({ reviews }) => {
   const filtered = reviews.filter(restaurant => restaurant.searched === true);
@@ -12,4 +12,3 @@ const Users = ({ reviews }) => {
 };
 
 export default Users;
-

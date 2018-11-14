@@ -5,26 +5,26 @@ module.exports = {
   plugins: [
     new CompressionPlugin(),
   ],
-  entry: './client/src/index.js', //tells where webpack to start looking for files
+  entry: './client/src/index.jsx', // tells where webpack to start looking for files
   output: {
-    path: path.resolve(__dirname, 'public/dist'), //folder where webpack will put bundle
-    filename: 'bundled.js', //what the file be named
+    path: path.resolve(__dirname, 'public/dist'), // folder where webpack will put bundle
+    filename: 'bundled.js', // what the file be named
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   mode: 'development',
 };

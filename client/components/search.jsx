@@ -18,7 +18,6 @@ const Wrapper = styled.div`
     }
 `;
 
-
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -28,13 +27,12 @@ class Search extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleInputChange = (event) => {
+  handleInputChange(event) {
     this.setState({
       query: event.target.value
     });
     this.props.onChange(event.target.value)
   };
-
 
   render() {
     return (
@@ -48,6 +46,5 @@ class Search extends Component {
   }
 
 }
-
 
 export default Search;
