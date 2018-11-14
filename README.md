@@ -6,11 +6,11 @@
 
 ## Related Projects
 
-  - https://github.com/YumpSF/popular-dishes-and-full-menu
-  - https://github.com/YumpSF/overview
-  - https://github.com/YumpSF/reservation-hours
-  - https://github.com/YumpSF/Proxy_Danny
+  - https://github.com/pley...
 
+## Contributors
+
+  - Eric Callari
 
 ## Table of Contents
 
