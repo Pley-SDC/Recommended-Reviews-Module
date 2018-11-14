@@ -36,15 +36,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public/dist')));
 
 // send to index.html of particular restaurant_id and shows all reviews for that restaurant_id
-app.get('/:restaurant_id', (req, res) => {
+app.get('/:restaurantId', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/dist/index.html'));
 });
 
 // shows an array of objects filled with data of that
 // particular restaurant_id and all the reviews for that restaurant
-app.get('/api/:restaurant_id/', (req, res) => {
-  const restaurant_id = req.params.restaurant_id;
-  db.restaurantReviews(restaurant_id, (err, results) => {
+app.get('/api/:restaurantId/', (req, res) => {
+  const { restaurantId } = req.params;
+  db.restaurantReviews(restaurantId, (err, results) => {
     if (err) {
       res.status(500).send();
     }

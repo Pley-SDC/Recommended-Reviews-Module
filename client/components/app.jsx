@@ -33,7 +33,7 @@ class App extends React.Component {
   }
 
   fetchReviews(id) {
-    $.ajax(`http://100.24.121.85:3000/api/${id}`, {
+    $.ajax(`localhost:3000/api/${id}`, {
       success: (reviews) => {
         const wrappedReviews = reviews.map(restaurant => {
           return {
@@ -48,7 +48,7 @@ class App extends React.Component {
     });
   }
 
-  filterReviews = (query) => {
+  filterReviews(query) {
     const { reviews } = this.state;
     const updated = reviews.map(restaurant => {
       if (restaurant.review.review_comment.toLowerCase().includes(query.toLowerCase())) {
@@ -65,7 +65,6 @@ class App extends React.Component {
       reviews: updated,
     });
   };
-
 
   render() {
     const {reviews} = this.state;

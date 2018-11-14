@@ -83,34 +83,34 @@ const Wrapper = styled.div`
 
 const User = ({ restaurant }) => (
   <Wrapper>
-  <div className="restaurant_reviews">
-    <div className="users_info">
-      <div className="users_columns">
-        <div className="user_bio">
-          <img src={restaurant.review.user_avatar}/>
-          <div className="user_bio_flex">
-            <div className="user_info_text">
-              <div className="user_info_name">{restaurant.review.user_name}</div>
-              <div className="user_info_location">{restaurant.review.location}</div>
-              <div className="user_info_reviews">
-                <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/review_star.png"/> {restaurant.review.number_reviews} reviews</div>
-              <div className="user_info_photos">
-                <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/camera.png"/> {restaurant.review.number_photos} photos</div>
+    <div className="restaurant_reviews">
+      <div className="users_info">
+        <div className="users_columns">
+          <div className="user_bio">
+            <img src={restaurant.review.user_avatar}/>
+            <div className="user_bio_flex">
+              <div className="user_info_text">
+                <div className="user_info_name">{restaurant.review.user_name}</div>
+                <div className="user_info_location">{restaurant.review.location}</div>
+                <div className="user_info_reviews">
+                  <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/review_star.png"/> {restaurant.review.number_reviews} reviews</div>
+                <div className="user_info_photos">
+                  <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/camera.png"/> {restaurant.review.number_photos} photos</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <div className="users_reviews">
-          <div>
-            <img src={restaurant.review.score}/> <span className="date">{moment(restaurant.review.date).format('L')}</span>
+        <div>
+          <div className="users_reviews">
+            <div>
+              <img src={restaurant.review.score}/> <span className="date">{moment(restaurant.review.date).format('L')}</span>
+            </div>
+            <p className="users_comment">{restaurant.review.review_comment}</p>
+            <p><img className="food_picture" src={restaurant.review.picture_food}/></p>
           </div>
-          <p className="users_comment">{restaurant.review.review_comment}</p>
-          <p><img className="food_picture" src={restaurant.review.picture_food}/></p>
         </div>
       </div>
     </div>
-  </div>
   </Wrapper>);
 
 export default User;
