@@ -46,10 +46,10 @@ app.get('/api/:restaurantId/', (req, res) => {
   const { restaurantId } = req.params;
   db.restaurantReviews(restaurantId, (err, results) => {
     if (err) {
-      res.status(500).send();
+      res.status(500).send(err);
     }
     res.send(results);
   });
 });
 
-app.listen(3000, () => { console.log('listening on port', 3000); });
+app.listen(3003, () => { console.log('listening on port', 3003); });

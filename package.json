@@ -1,11 +1,11 @@
 {
-  "name": "Yump_Reviews_Module",
+  "name": "pley_review_module",
   "version": "1.0.0",
   "description": "User_reviews_component",
-  "author": "Danny Ngo",
+  "author": "Eric Callari <ericcallari1@gmail.com>",
   "license": "",
   "engines": {
-    "node": ">=6.13.0"
+    "node": ">=8.12.0"
   },
   "scripts": {
     "start": "nodemon server/index.js",
