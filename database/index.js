@@ -68,21 +68,3 @@ const deleteReview = (review, callback) => {
 module.exports = {
   connection, getReviews, addReview, editReview, deleteReview,
 };
-
-// ////////
-// app.put('/api/images/:id', (req, res) => {
-//   const values = req.body;
-//   const colsToUpdate = Object.keys(values);
-//   const assignmentList = colsToUpdate.map((colName) => {
-//     const val = colName === 'restaurant' ? values[colName] : `"${values[colName]}"`;
-//     return `${colName} = ${val}`;
-//   }).join(', ');
-//   db.query(`UPDATE images SET ${assignmentList} WHERE id = ${req.params.id};`, (err) => {
-//     if (err) {
-//       console.error(err);
-//       res.sendStatus(500);
-//     } else {
-//       res.sendStatus(202);
-//     }
-//   });
-// });
