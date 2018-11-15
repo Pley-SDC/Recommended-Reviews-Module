@@ -3,6 +3,7 @@ const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
+
 // generate restaurant table data (100)
 const dataRestaurant = [];
 for (let i = 0; i < 100; i += 1) {

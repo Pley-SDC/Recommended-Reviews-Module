@@ -27,34 +27,40 @@ const getReviews = (id, callback) => {
 };
 
 const addReview = (review, callback) => {
-  const query = `${review}`;
-  connection.query(query, (error, results) => {
+  const columns = 'user_id, restaurant_id, date, review_comment, score, picture_food';
+  const values = `"${review.user_id}", "${review.restaurant_id}", "${review.date}", "${review.review_comment}", "${review.score}", "${review.picture_food}"`;
+  const query = `INSERT INTO users_reviews (${columns}) VALUES (${values});`;
+  connection.query(query, (error) => {
     if (error) {
-      callback(error, null);
+      callback(error);
     } else {
-      callback(null, results);
+      callback(null);
     }
   });
 };
 
 const editReview = (review, callback) => {
-  const query = `${review}`;
-  connection.query(query, (error, results) => {
+  const columns = Object.keys(review);
+  let updates = columns.filter(col => col !== 'id');
+  updates = updates.map(col => (typeof review[col] === 'string' ? `"${col}"="${review[col]}"` : `"${col}"=${review[col]}`)).join(', ');
+  console.log(`UPDATES>>>>>>>>>>>>>>> ${updates}`);
+  const query = `UPDATE users_reviews SET ${updates} WHERE id=${review.id};`;
+  connection.query(query, (error) => {
     if (error) {
-      callback(error, null);
+      callback(error);
     } else {
-      callback(null, results);
+      callback(null);
     }
   });
 };
 
 const deleteReview = (review, callback) => {
-  const query = `${review}`;
-  connection.query(query, (error, results) => {
+  const query = `DELETE FROM users_reviews WHERE id=${review.id}`;
+  connection.query(query, (error) => {
     if (error) {
-      callback(error, null);
+      callback(error);
     } else {
-      callback(null, results);
+      callback(null);
     }
   });
 };
@@ -62,3 +68,21 @@ const deleteReview = (review, callback) => {
 module.exports = {
   connection, getReviews, addReview, editReview, deleteReview,
 };
+
+// ////////
+// app.put('/api/images/:id', (req, res) => {
+//   const values = req.body;
+//   const colsToUpdate = Object.keys(values);
+//   const assignmentList = colsToUpdate.map((colName) => {
+//     const val = colName === 'restaurant' ? values[colName] : `"${values[colName]}"`;
+//     return `${colName} = ${val}`;
+//   }).join(', ');
+//   db.query(`UPDATE images SET ${assignmentList} WHERE id = ${req.params.id};`, (err) => {
+//     if (err) {
+//       console.error(err);
+//       res.sendStatus(500);
+//     } else {
+//       res.sendStatus(202);
+//     }
+//   });
+// });

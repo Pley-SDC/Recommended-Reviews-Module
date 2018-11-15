@@ -44,11 +44,41 @@ app.get('/:restaurantId', (req, res) => {
 // particular restaurant_id and all the reviews for that restaurant
 app.get('/api/:restaurantId/', (req, res) => {
   const { restaurantId } = req.params;
-  db.getReviews(restaurantId, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
+  db.getReviews(restaurantId, (error, results) => {
+    if (error) {
+      res.status(500).send(error);
     }
     res.send(results);
+  });
+});
+
+app.post('/api/:restaurantId/', (req, res) => {
+  db.addReview(req.body, (error) => {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.sendStatus(201);
+    }
+  });
+});
+
+app.put('/api/:restaurantId/', (req, res) => {
+  db.editReview(req.body, (error) => {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.sendStatus(202);
+    }
+  });
+});
+
+app.delete('/api/:restaurantId/', (req, res) => {
+  db.deleteReview(req.body, (error) => {
+    if (error) {
+      res.status(404).send(error);
+    } else {
+      res.sendStatus(200);
+    }
   });
 });
 

@@ -56,3 +56,11 @@ npm install -g webpack
 npm install
 ```
 
+## Endpoints
+
+| Action | Method | Endpoint | Purpose|
+|---|---|---|---|
+| Create | POST | /api/:restaurant_id/reservation | Make New Reservation |
+| Read | GET | /api/:restaurant_id/reservation | Get Reservations |
+| Update | PUT | /api/:restaurant_id/reservation | Update Reservation |
+| Delete | DELETE | /api/:restaurant_id/reservation | Delete Reservation |
