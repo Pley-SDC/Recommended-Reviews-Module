@@ -3,10 +3,11 @@ const faker = require('faker');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
+
 // generate restaurant table data (100)
 const dataRestaurant = [];
-for (let i = 0; i < 100; i++) {
-  var restaurant = {};
+for (let i = 0; i < 100; i += 1) {
+  const restaurant = {};
   restaurant.restaurant_id = i + 1;
   restaurant.name = faker.company.companyName();
   dataRestaurant.push(restaurant);
@@ -20,8 +21,8 @@ for (let i = 0; i < 100; i++) {
 
 // generate user info table data (100)
 const dataUserInfo = [];
-for (let i = 0; i < 100; i++) {
-  var user = {};
+for (let i = 0; i < 100; i += 1) {
+  const user = {};
   user.user_id = i + 1;
   user.user_name = faker.name.findName();
   user.user_avatar = faker.image.avatar();
@@ -39,18 +40,18 @@ for (let i = 0; i < 100; i++) {
 
 // generate user review table data (1000)
 const dataUserReview = [];
-for (let i = 0; i < 1000; i++) {
-  var reviews = {};
-  var urlPath = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/';
-  var stars = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/regular_';
+for (let i = 0; i < 1000; i += 1) {
+  const reviews = {};
+  const urlPath = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/';
+  const stars = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/regular_';
   reviews.id = i + 1;
   reviews.user_id = Math.floor(Math.random() * 100) + 1;
   reviews.restaurant_id = Math.floor(Math.random() * 100) + 1;
   reviews.date = faker.date.past();
   reviews.date = moment(reviews.date).format('YYYY-MM-DD');
   reviews.review_comment = faker.lorem.paragraph();
-  reviews.score = stars + Math.floor(Math.random() *9 + 1) + '.png';
-  reviews.picture_food = urlPath + Math.floor(Math.random() * 9 + 1) + '.jpeg';
+  reviews.score = `${stars + Math.floor(Math.random() * 9 + 1)}.png`;
+  reviews.picture_food = `${urlPath + Math.floor(Math.random() * 9 + 1)}.jpeg`;
   dataUserReview.push(reviews);
   // const queryString = 'Insert INTO users_reviews(user_id, date, review_comment, score, picture_food, restaurant_id) VALUES(?, ?, ?, ?, ?, ?)';
   // db.connection.query(queryString, [obj.user_id, obj.date, obj.review_comment, obj.score, obj.picture_food, obj.restaurant_id], (err) => {
@@ -63,13 +64,13 @@ for (let i = 0; i < 1000; i++) {
 const csvConverter = (arr) => {
   let output = '';
   let column = [];
-  for (let key in arr[0]) {
+  for (const key in arr[0]) {
     column.push(key);
   }
   output += `${column.join()}\n`;
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i += 1) {
     column = [];
-    for (let key in arr[i]) {
+    for (const key in arr[i]) {
       column.push(arr[i][key]);
     }
     output += `${column.join()}\n`;
