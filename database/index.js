@@ -42,7 +42,7 @@ const addReview = (review, callback) => {
 const editReview = (review, callback) => {
   const columns = Object.keys(review);
   let updates = columns.filter(col => col !== 'id');
-  updates = updates.map(col => (typeof review[col] === 'string' ? `"${col}"="${review[col]}"` : `"${col}"=${review[col]}`)).join(', ');
+  updates = updates.map(col => (typeof review[col] === 'string' ? `${col}="${review[col]}"` : `${col}=${review[col]}`)).join(', ');
   console.log(`UPDATES>>>>>>>>>>>>>>> ${updates}`);
   const query = `UPDATE users_reviews SET ${updates} WHERE id=${review.id};`;
   connection.query(query, (error) => {
