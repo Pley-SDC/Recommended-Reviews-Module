@@ -1,64 +1,56 @@
 const faker = require('faker');
-// const db = require('./index.js');
+const HipsterIpsum = require('hipsteripsum');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
+const _ = require('underscore');
+const { sprintf } = require('sprintf-js');
 
-// generate restaurant table data (100)
+// generate restaurant table data (10M)
 const dataRestaurant = [];
-for (let i = 0; i < 100; i += 1) {
+for (let i = 0; i < 10000000; i += 1) {
+  if (i % 100000 === 0) {
+    console.log(`${i} rows written to restaurant table`);
+  }
   const restaurant = {};
   restaurant.restaurant_id = i + 1;
   restaurant.name = faker.company.companyName();
   dataRestaurant.push(restaurant);
-  // const queryString = 'Insert INTO restaurant(name) VALUES(?)';
-  // db.connection.query(queryString, [obj.name], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
 }
 
-// generate user info table data (100)
+// generate user_info table data (10M)
 const dataUserInfo = [];
-for (let i = 0; i < 100; i += 1) {
+for (let i = 0; i < 10000000; i += 1) {
+  if (i % 100000 === 0) {
+    console.log(`${i} rows written to user_info table`);
+  }
   const user = {};
   user.user_id = i + 1;
   user.user_name = faker.name.findName();
   user.user_avatar = faker.image.avatar();
   user.location = `${faker.address.city()} ${faker.address.state()}`;
-  user.number_reviews = Math.floor(Math.random() * 50) + 1;
-  user.number_photos = Math.floor(Math.random() * 40) + 1;
+  user.number_reviews = _.random(1, 50);
+  user.number_photos = _.random(1, 40);
   dataUserInfo.push(user);
-  // const queryString = 'Insert INTO user_info(user_name, user_avatar,location, number_reviews, number_photos) VALUES(?, ?, ?, ?, ?)';
-  // db.connection.query(queryString, [obj.user_name, obj.user_avatar, obj.location, obj.number_reviews, obj.number_photos], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
 }
 
-// generate user review table data (1000)
+// generate users_review table data (40M)
 const dataUserReview = [];
-for (let i = 0; i < 1000; i += 1) {
+for (let i = 0; i < 40000000; i += 1) {
+  if (i % 100000 === 0) {
+    console.log(`${i} rows written to users_review table`);
+  }
   const reviews = {};
-  const urlPath = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/';
-  const stars = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/regular_';
+  const urlPath = 'https://s3-us-west-1.amazonaws.com/pley-food/';
   reviews.id = i + 1;
-  reviews.user_id = Math.floor(Math.random() * 100) + 1;
-  reviews.restaurant_id = Math.floor(Math.random() * 100) + 1;
+  reviews.user_id = _.random(1, 10000000);
+  reviews.restaurant_id = _.random(1, 10000000);
   reviews.date = faker.date.past();
   reviews.date = moment(reviews.date).format('YYYY-MM-DD');
-  reviews.review_comment = faker.lorem.paragraph();
-  reviews.score = `${stars + Math.floor(Math.random() * 9 + 1)}.png`;
-  reviews.picture_food = `${urlPath + Math.floor(Math.random() * 9 + 1)}.jpeg`;
+  reviews.review_comment = HipsterIpsum.get(1);
+  reviews.score = `${urlPath}star_${_.random(1, 9)}.png`;
+  reviews.picture_food = `${urlPath + sprintf('%05s.jpg', _.random(1, 1000))}`;
   dataUserReview.push(reviews);
-  // const queryString = 'Insert INTO users_reviews(user_id, date, review_comment, score, picture_food, restaurant_id) VALUES(?, ?, ?, ?, ?, ?)';
-  // db.connection.query(queryString, [obj.user_id, obj.date, obj.review_comment, obj.score, obj.picture_food, obj.restaurant_id], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
 }
 
 const csvConverter = (arr) => {
@@ -83,16 +75,25 @@ const userInfoCSV = csvConverter(dataUserInfo);
 const userReviewCSV = csvConverter(dataUserReview);
 
 fs.writeFile(path.join(__dirname, 'restaurant.csv'), restaurantCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
+  if (err) {
+    throw err;
+  } else {
+    console.log('data stored in restaurant table :)');
+  }
 });
 
 fs.writeFile(path.join(__dirname, 'user_info.csv'), userInfoCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
+  if (err) {
+    throw err;
+  } else {
+    console.log('data stored in user_info table :)');
+  }
 });
 
 fs.writeFile(path.join(__dirname, 'users_reviews.csv'), userReviewCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
+  if (err) {
+    throw err;
+  } else {
+    console.log('data stored in users_reviews table :)');
+  }
 });
