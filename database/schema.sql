@@ -1,23 +1,23 @@
-DROP DATABASE IF EXISTS yump_SF;
+DROP DATABASE IF EXISTS pley;
 
-create database yump_SF;
+create database pley;
 
-use yump_SF;
+use pley;
 
 create table restaurant
 (
   restaurant_id   int auto_increment not null
     primary key,
-  name text not null
+  name varchar(100) not null
 );
 
 create table user_info
 (
   user_id             int auto_increment not null
     primary key,
-  user_name           text not null,
-  user_avatar         text not null,
-  location            text not null,
+  user_name           varchar(100) not null,
+  user_avatar         varchar(100) not null,
+  location            varchar(100) not null,
   number_reviews      int  not null,
   number_photos       int  not null
 );
@@ -30,8 +30,8 @@ create table users_reviews
   restaurant_id  int  not null,
   date           date not null,
   review_comment text not null,
-  score          text not null,
-  picture_food   text not null,
+  score          varchar(100) not null,
+  picture_food   varchar(100) not null,
   foreign key (user_id) references user_info (user_id),
   foreign key (restaurant_id) references restaurant (restaurant_id)
 );

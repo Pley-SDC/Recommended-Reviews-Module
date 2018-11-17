@@ -1,65 +1,65 @@
 const faker = require('faker');
-// const db = require('./index.js');
+const HipsterIpsum = require('hipsteripsum');
 const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
+const _ = require('underscore');
+const { sprintf } = require('sprintf-js');
 
-// generate restaurant table data (100)
-const dataRestaurant = [];
-for (let i = 0; i < 100; i += 1) {
-  const restaurant = {};
-  restaurant.restaurant_id = i + 1;
-  restaurant.name = faker.company.companyName();
-  dataRestaurant.push(restaurant);
-  // const queryString = 'Insert INTO restaurant(name) VALUES(?)';
-  // db.connection.query(queryString, [obj.name], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
-}
+const batchSize = 1000;
+let restaurantId = 1;
+let userInfoId = 1;
+let usersReviewsId = 1;
 
-// generate user info table data (100)
-const dataUserInfo = [];
-for (let i = 0; i < 100; i += 1) {
-  const user = {};
-  user.user_id = i + 1;
-  user.user_name = faker.name.findName();
-  user.user_avatar = faker.image.avatar();
-  user.location = `${faker.address.city()} ${faker.address.state()}`;
-  user.number_reviews = Math.floor(Math.random() * 50) + 1;
-  user.number_photos = Math.floor(Math.random() * 40) + 1;
-  dataUserInfo.push(user);
-  // const queryString = 'Insert INTO user_info(user_name, user_avatar,location, number_reviews, number_photos) VALUES(?, ?, ?, ?, ?)';
-  // db.connection.query(queryString, [obj.user_name, obj.user_avatar, obj.location, obj.number_reviews, obj.number_photos], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
-}
+// generate restaurant table data (10M)
+const seedRestaurant = (rows = batchSize) => {
+  const dataRestaurant = [];
+  for (let i = 0; i < rows; i += 1) {
+    const restaurant = {};
+    restaurant.restaurant_id = restaurantId;
+    restaurantId += 1;
+    restaurant.name = faker.company.companyName();
+    dataRestaurant.push(restaurant);
+  }
+  return dataRestaurant;
+};
 
-// generate user review table data (1000)
-const dataUserReview = [];
-for (let i = 0; i < 1000; i += 1) {
-  const reviews = {};
-  const urlPath = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/';
-  const stars = 'https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/regular_';
-  reviews.id = i + 1;
-  reviews.user_id = Math.floor(Math.random() * 100) + 1;
-  reviews.restaurant_id = Math.floor(Math.random() * 100) + 1;
-  reviews.date = faker.date.past();
-  reviews.date = moment(reviews.date).format('YYYY-MM-DD');
-  reviews.review_comment = faker.lorem.paragraph();
-  reviews.score = `${stars + Math.floor(Math.random() * 9 + 1)}.png`;
-  reviews.picture_food = `${urlPath + Math.floor(Math.random() * 9 + 1)}.jpeg`;
-  dataUserReview.push(reviews);
-  // const queryString = 'Insert INTO users_reviews(user_id, date, review_comment, score, picture_food, restaurant_id) VALUES(?, ?, ?, ?, ?, ?)';
-  // db.connection.query(queryString, [obj.user_id, obj.date, obj.review_comment, obj.score, obj.picture_food, obj.restaurant_id], (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
-}
+// generate user_info table data (10M)
+const seedUserInfo = (rows = batchSize) => {
+  const dataUserInfo = [];
+  for (let i = 0; i < rows; i += 1) {
+    const user = {};
+    user.user_id = userInfoId;
+    userInfoId += 1;
+    user.user_name = faker.name.findName();
+    user.user_avatar = faker.image.avatar();
+    user.location = `${faker.address.city()} ${faker.address.state()}`;
+    user.number_reviews = _.random(1, 50);
+    user.number_photos = _.random(1, 40);
+    dataUserInfo.push(user);
+  }
+  return dataUserInfo;
+};
+
+// generate users_review table data (40M)
+const seedUserReviews = (rows = batchSize) => {
+  const dataUserReview = [];
+  for (let i = 0; i < rows; i += 1) {
+    const reviews = {};
+    const urlPath = 'https://s3-us-west-1.amazonaws.com/pley-food/';
+    reviews.id = usersReviewsId;
+    usersReviewsId += 1;
+    reviews.user_id = _.random(1, 10000000);
+    reviews.restaurant_id = _.random(1, 10000000);
+    reviews.date = faker.date.past();
+    reviews.date = moment(reviews.date).format('YYYY-MM-DD');
+    reviews.review_comment = HipsterIpsum.get(1);
+    reviews.score = `${urlPath}star_${_.random(1, 9)}.png`;
+    reviews.picture_food = `${urlPath + sprintf('%05s.jpg', _.random(1, 1000))}`;
+    dataUserReview.push(reviews);
+  }
+  return dataUserReview;
+};
 
 const csvConverter = (arr) => {
   let output = '';
@@ -78,21 +78,28 @@ const csvConverter = (arr) => {
   return output;
 };
 
-const restaurantCSV = csvConverter(dataRestaurant);
-const userInfoCSV = csvConverter(dataUserInfo);
-const userReviewCSV = csvConverter(dataUserReview);
+function createSeedWriter(fileName, total, seedGenerator, cb) {
+  let totalSeedEntries = total / batchSize;
+  const destination = path.resolve(__dirname, fileName);
+  const stream = fs.createWriteStream(destination);
 
-fs.writeFile(path.join(__dirname, 'restaurant.csv'), restaurantCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
-});
+  const writer = () => {
+    let result = true;
+    while (result && totalSeedEntries > 0) {
+      result = stream.write(csvConverter(seedGenerator()));
+      totalSeedEntries -= 1;
+    }
+    if (totalSeedEntries > 0) {
+      stream.once('drain', writer);
+    } else if (totalSeedEntries <= 0 && cb) {
+      console.log('Switching to next table...');
+      cb();
+    }
+  };
+  return writer;
+}
 
-fs.writeFile(path.join(__dirname, 'user_info.csv'), userInfoCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
-});
-
-fs.writeFile(path.join(__dirname, 'users_reviews.csv'), userReviewCSV, (err) => {
-  if (err) throw err;
-  console.log('saved');
-});
+const userReviewsWriter = createSeedWriter('users_reviews.csv', 40000000, seedUserReviews);
+const userInfoWriter = createSeedWriter('user_info.csv', 10000000, seedUserInfo, userReviewsWriter);
+const restaurantWriter = createSeedWriter('restaurant.csv', 10000000, seedRestaurant, userInfoWriter);
+restaurantWriter();

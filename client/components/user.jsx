@@ -94,9 +94,9 @@ const User = ({ restaurant }) => (
                 <div className="user_info_name">{restaurant.review.user_name}</div>
                 <div className="user_info_location">{restaurant.review.location}</div>
                 <div className="user_info_reviews">
-                  <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/review_star.png"/> {restaurant.review.number_reviews} reviews</div>
+                  <img src="https://s3-us-west-1.amazonaws.com/pley-food/star.png"/> {restaurant.review.number_reviews} reviews</div>
                 <div className="user_info_photos">
-                  <img src="https://s3-us-west-1.amazonaws.com/hrfrontendcapstone/camera.png"/> {restaurant.review.number_photos} photos</div>
+                  <img src="https://s3-us-west-1.amazonaws.com/pley-food/camera.png"/> {restaurant.review.number_photos} photos</div>
               </div>
             </div>
           </div>
