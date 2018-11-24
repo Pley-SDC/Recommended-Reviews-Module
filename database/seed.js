@@ -11,6 +11,12 @@ let restaurantId = 1;
 let userInfoId = 1;
 let usersReviewsId = 1;
 
+// create a company name without commas
+const genCompName = () => {
+  const name = faker.company.companyName();
+  return name.includes(',') ? name.split(',').join('') : name;
+};
+
 // generate restaurant table data (10M)
 const seedRestaurant = (rows = batchSize) => {
   const dataRestaurant = [];
@@ -18,7 +24,7 @@ const seedRestaurant = (rows = batchSize) => {
     const restaurant = {};
     restaurant.restaurant_id = restaurantId;
     restaurantId += 1;
-    restaurant.name = faker.company.companyName();
+    restaurant.name = genCompName();
     dataRestaurant.push(restaurant);
   }
   return dataRestaurant;
