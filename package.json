@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "artillery": "^1.6.0-25",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.4",
     "bluebird": "^3.5.2",
