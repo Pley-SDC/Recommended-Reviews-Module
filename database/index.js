@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 // connect to database
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'ec2-13-52-51-11.us-west-1.compute.amazonaws.com',
   user: 'root',
   database: 'pley',
 });
