@@ -49,6 +49,7 @@ app.get('/api/:restaurantId/', (req, res) => {
     if (error) {
       res.status(500).send(error);
     }
+    console.log(results);
     res.send(results);
   });
 });
