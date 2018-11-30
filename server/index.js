@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const compression = require('compression');
 const db = require('../database/index.js');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -12,6 +13,7 @@ function shouldCompress(req, res) {
   return compression.filter(req, res);
 }
 
+app.use(morgan('dev'));
 app.use(express.static('build'));
 app.use(compression({
   level: 2, // set compression level from 1 to 9 (6 by default)
@@ -47,10 +49,12 @@ app.get('/api/:restaurantId/', (req, res) => {
   const { restaurantId } = req.params;
   db.getReviews(restaurantId, (error, results) => {
     if (error) {
+      console.log(error.message);
       res.status(500).send(error);
+    } else {
+      console.log(results);
+      res.send(results);
     }
-    console.log(results);
-    res.send(results);
   });
 });
 
