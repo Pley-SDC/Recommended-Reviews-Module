@@ -24,6 +24,7 @@ const getReviews = (id, callback) => {
     ORDER BY users_reviews.date desc
   `;
   connection.query(query, (error, results) => {
+    console.log('inside query', error, results);
     if (error) {
       callback(error, null);
     } else {
