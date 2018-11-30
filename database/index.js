@@ -7,12 +7,12 @@ const connection = mysql.createConnection({
   database: 'pley',
 });
 
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
+    console.error(`error connecting: ${err.stack}`);
+  } else {
+    console.log('connected');
   }
-  console.log('connected');
 });
 
 const getReviews = (id, callback) => {

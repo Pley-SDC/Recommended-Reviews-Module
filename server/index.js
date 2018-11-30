@@ -47,15 +47,17 @@ app.get('/:restaurantId', (req, res) => {
 // particular restaurant_id and all the reviews for that restaurant
 app.get('/api/:restaurantId/', (req, res) => {
   const { restaurantId } = req.params;
-  db.getReviews(restaurantId, (error, results) => {
-    if (error) {
-      console.log(error.message);
-      res.status(500).send(error);
-    } else {
-      console.log(results);
-      res.send(results);
-    }
-  });
+  // db.getReviews(restaurantId, (error, results) => {
+  //   if (error) {
+  //     console.log(error.message);
+  //     res.status(500).send(error);
+  //   } else {
+  //     console.log(results);
+  //     res.send(results);
+  //   }
+  // });
+  console.log('restaurantId = ', restaurantId);
+  console.log('GET.trigger');
 });
 
 app.post('/api/:restaurantId/', (req, res) => {
